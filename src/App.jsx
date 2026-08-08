@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { INITIAL_RECORDS } from './data/initialData';
 import { Header } from './components/Header';
 import { SummaryCards } from './components/SummaryCards';
 import { RecordCard } from './components/RecordCard';
@@ -19,6 +18,7 @@ import {
 } from 'lucide-react';
 
 const STORAGE_KEY = 'control_cuentas_records_v3';
+const LEGACY_DEMO_RECORD_IDS = new Set(['rec-1', 'rec-2', 'rec-3', 'rec-4']);
 
 export function App() {
   const [records, setRecords] = useState(() => {
@@ -26,12 +26,14 @@ export function App() {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed)) {
+          return parsed.filter((record) => !LEGACY_DEMO_RECORD_IDS.has(record.id));
+        }
       }
     } catch (e) {
       console.error('Error loading records from localStorage', e);
     }
-    return INITIAL_RECORDS;
+    return [];
   });
 
   useEffect(() => {
