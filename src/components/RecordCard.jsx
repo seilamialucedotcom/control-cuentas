@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   formatCurrency,
   formatDateTime,
@@ -19,6 +19,7 @@ import {
   FileText,
   History,
   Image,
+  X,
 } from 'lucide-react';
 
 export const RecordCard = ({
@@ -30,6 +31,9 @@ export const RecordCard = ({
   onDelete,
   onAddImages,
 }) => {
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const safeImages = Array.isArray(item?.imagenes) ? item.imagenes : [];
   const isDeuda = item.tipo === 'deuda';
   const isPagado = item.estado === 'pagado';
   const pendiente = item.montoTotal - item.montoPagado;
@@ -236,14 +240,118 @@ export const RecordCard = ({
         </div>
       )}
 
-      {/* Thumbnails of attached images (if any) */}
-      {item.imagenes && item.imagenes.length > 0 && (
-        <div className="mt-3 grid grid-cols-4 gap-2">
-          {item.imagenes.map((src, idx) => (
-            <a key={idx} href={src} target="_blank" rel="noreferrer" className="block">
-              <img src={src} alt={`Imagen ${idx + 1}`} className="w-full h-20 object-cover rounded-md border" />
-            </a>
-          ))}
+      {/* Ver imágenes */}
+      {safeImages.length > 0 && (
+        <div className="mt-4 space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#6E6A63]">
+              Ver imágenes
+            </span>
+            <span className="text-[11px] text-[#8C8479]">
+              {safeImages.length} {safeImages.length === 1 ? 'imagen' : 'imágenes'}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            {safeImages.map((src, idx) => (
+              <button
+                key={`${src}-${idx}`}
+                type="button"
+                onClick={() => setSelectedImage({ src, index: idx, persona: item.persona, concepto: item.concepto, images: safeImages })}
+                className="group relative block overflow-hidden rounded-xl border border-[#E2DAD0] bg-[#F7F3EB] shadow-xs transition hover:scale-[1.01] hover:border-[#C1DEC7]"
+                aria-label={`Ver imagen ${idx + 1}`}
+              >
+                <div className="relative aspect-[4/3] w-full overflow-hidden">
+                  <img
+                    src={src}
+                    alt={`Imagen ${idx + 1} de ${item.persona}`}
+                    className="h-full w-full object-cover transition duration-200 group-hover:scale-105"
+                  />
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {selectedImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#2D2A26]/75 p-4 backdrop-blur-sm"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div
+            className="relative w-full max-w-4xl overflow-hidden rounded-2xl border border-[#EFE8DC] bg-[#FFFDF9] shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setSelectedImage(null)}
+              className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-[#2D2A26]/70 text-white transition hover:bg-[#2D2A26]"
+              aria-label="Cerrar vista de imagen"
+            >
+              <X className="h-4 w-4" />
+            </button>
+
+            <div className="bg-[#F7F3EB] p-3">
+              <div className="flex items-center justify-between gap-3 text-[11px] text-[#6E6A63]">
+                <span className="font-bold uppercase tracking-wider">Ver imágenes</span>
+                <span>
+                  {selectedImage.persona} • {selectedImage.concepto}
+                </span>
+              </div>
+            </div>
+
+            <div className="relative bg-white">
+              <button
+                type="button"
+                onClick={() => {
+                  const prevIndex = selectedImage.index > 0 ? selectedImage.index - 1 : selectedImage.images.length - 1;
+                  setSelectedImage({
+                    src: selectedImage.images[prevIndex],
+                    index: prevIndex,
+                    persona: selectedImage.persona,
+                    concepto: selectedImage.concepto,
+                    images: selectedImage.images,
+                  });
+                }}
+                className="absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-[#2D2A26]/70 text-white transition hover:bg-[#2D2A26]"
+                aria-label="Imagen anterior"
+              >
+                ‹
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  const nextIndex = selectedImage.index < selectedImage.images.length - 1 ? selectedImage.index + 1 : 0;
+                  setSelectedImage({
+                    src: selectedImage.images[nextIndex],
+                    index: nextIndex,
+                    persona: selectedImage.persona,
+                    concepto: selectedImage.concepto,
+                    images: selectedImage.images,
+                  });
+                }}
+                className="absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-[#2D2A26]/70 text-white transition hover:bg-[#2D2A26]"
+                aria-label="Imagen siguiente"
+              >
+                ›
+              </button>
+
+              <div className="max-h-[75vh] overflow-auto bg-white">
+                <img
+                  src={selectedImage.src}
+                  alt={`Vista ampliada ${selectedImage.index + 1}`}
+                  className="h-auto max-h-[70vh] w-full object-contain bg-[#FFFDF9]"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between gap-3 border-t border-[#F0E8DC] bg-[#FAF7F2] px-4 py-3 text-xs text-[#5C5750]">
+              <span>Imagen {selectedImage.index + 1} de {selectedImage.images.length}</span>
+              <span>{selectedImage.persona}</span>
+            </div>
+          </div>
         </div>
       )}
 

@@ -1,4 +1,6 @@
 import { formatCurrency, formatDateTime, formatDateOnly } from './formatters';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 function escapeHtml(str) {
   return str
@@ -261,6 +263,103 @@ export function printRecordPdf(item) {
   printWindow.document.open();
   printWindow.document.write(html);
   printWindow.document.close();
+}
+
+export function downloadPersonStatementPdf(personName, items) {
+  let totalDeuda = 0;
+  let totalCobro = 0;
+  let totalAbonado = 0;
+
+  items.forEach((item) => {
+    const pending = item.montoTotal - item.montoPagado;
+    if (item.estado === 'pendiente') {
+      if (item.tipo === 'deuda') totalDeuda += pending;
+      if (item.tipo === 'cobro') totalCobro += pending;
+    }
+    totalAbonado += item.montoPagado;
+  });
+
+  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const emissionDate = formatDateTime(new Date().toISOString());
+
+  doc.setFillColor(91, 130, 102);
+  doc.roundedRect(14, 12, 46, 7, 1.5, 1.5, 'F');
+  doc.setFontSize(8);
+  doc.setTextColor(255, 255, 255);
+  doc.text('CONTROL DE CUENTAS', 17, 16.7);
+  doc.setTextColor(45, 42, 38);
+  doc.setFontSize(19);
+  doc.text(`Resumen de cuenta: ${personName}`, 14, 29);
+  doc.setFontSize(9);
+  doc.setTextColor(122, 116, 107);
+  doc.text('Detalle consolidado de deudas, cobros y abonos parciales', 14, 35);
+  doc.text(`${items.length} cuentas registradas`, pageWidth - 14, 29, { align: 'right' });
+  doc.text(`Emisión: ${emissionDate}`, pageWidth - 14, 35, { align: 'right' });
+
+  const summaryCards = [
+    { label: 'DEUDA PENDIENTE', value: formatCurrency(totalDeuda), color: [194, 78, 49] },
+    { label: 'COBRO PENDIENTE', value: formatCurrency(totalCobro), color: [59, 102, 69] },
+    { label: 'TOTAL ABONADO', value: formatCurrency(totalAbonado), color: [45, 42, 38] },
+  ];
+  const cardWidth = (pageWidth - 36) / 3;
+  summaryCards.forEach((card, index) => {
+    const x = 14 + index * (cardWidth + 4);
+    doc.setFillColor(250, 247, 242);
+    doc.roundedRect(x, 43, cardWidth, 22, 2, 2, 'F');
+    doc.setFontSize(7.5);
+    doc.setTextColor(140, 132, 121);
+    doc.text(card.label, x + 4, 50);
+    doc.setFontSize(13);
+    doc.setTextColor(...card.color);
+    doc.text(card.value, x + 4, 59);
+  });
+
+  doc.setFontSize(10);
+  doc.setTextColor(45, 42, 38);
+  doc.text('LISTADO COMPLETO DE CUENTAS', 14, 75);
+
+  autoTable(doc, {
+    startY: 79,
+    head: [['Concepto', 'Tipo', 'Total', 'Abonado', 'Pendiente', 'Estado', 'Fecha límite']],
+    body: items.map((item) => {
+      const pending = item.montoTotal - item.montoPagado;
+      return [
+        item.concepto || 'Sin concepto',
+        item.tipo === 'deuda' ? 'Deuda' : 'Cobro',
+        formatCurrency(item.montoTotal),
+        formatCurrency(item.montoPagado),
+        formatCurrency(pending),
+        item.estado === 'pagado' ? 'Saldado' : 'Pendiente',
+        formatDateOnly(item.fechaLimite),
+      ];
+    }),
+    theme: 'grid',
+    styles: { fontSize: 8, cellPadding: 2.5, textColor: [45, 42, 38], lineColor: [226, 218, 208] },
+    headStyles: { fillColor: [61, 58, 54], textColor: [255, 255, 255], fontStyle: 'bold' },
+    alternateRowStyles: { fillColor: [250, 247, 242] },
+    columnStyles: {
+      0: { cellWidth: 74 },
+      1: { cellWidth: 24 },
+      2: { halign: 'right' },
+      3: { halign: 'right' },
+      4: { halign: 'right' },
+    },
+    didDrawPage: () => {
+      const pageNumber = doc.internal.getNumberOfPages();
+      doc.setFontSize(7.5);
+      doc.setTextColor(140, 132, 121);
+      doc.text('Generado por Control de Cuentas', 14, 202);
+      doc.text(`Página ${pageNumber}`, pageWidth - 14, 202, { align: 'right' });
+    },
+  });
+
+  const safePersonName = String(personName)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9]+/g, '_')
+    .replace(/^_|_$/g, '');
+  doc.save(`Estado_de_Cuenta_${safePersonName || 'usuario'}.pdf`);
 }
 
 export function printPersonStatementPdf(personName, items) {

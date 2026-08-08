@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { formatCurrency } from '../utils/formatters';
-import { printPersonStatementPdf } from '../utils/printHelper';
+import { downloadPersonStatementPdf } from '../utils/printHelper';
 import { RecordCard } from './RecordCard';
 import {
   ArrowLeft,
   User,
-  Printer,
+  Download,
   ArrowUpRight,
   ArrowDownLeft,
   Plus,
@@ -33,8 +33,8 @@ export const PersonDetailView = ({
     return true;
   });
 
-  const handlePrintFullStatement = () => {
-    printPersonStatementPdf(personGroup.nombre, personGroup.records);
+  const handleDownloadFullStatement = () => {
+    downloadPersonStatementPdf(personGroup.nombre, personGroup.records);
   };
 
   return (
@@ -51,12 +51,12 @@ export const PersonDetailView = ({
         </button>
 
         <button
-          onClick={handlePrintFullStatement}
+          onClick={handleDownloadFullStatement}
           className="inline-flex items-center gap-2 px-4 py-2 bg-[#C24E31] hover:bg-[#A84228] text-white text-xs font-bold rounded-xl transition shadow-xs"
-          title="Imprimir o guardar en PDF el Estado de Cuenta Completo"
+          title="Descargar el PDF completo de las cuentas de este usuario"
         >
-          <Printer className="w-4 h-4" />
-          <span>Exportar Estado de Cuenta PDF</span>
+          <Download className="w-4 h-4" />
+          <span>Descargar PDF</span>
         </button>
       </div>
 
