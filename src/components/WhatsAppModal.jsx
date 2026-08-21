@@ -15,8 +15,8 @@ export const WhatsAppModal = ({
       const pendiente = item.montoTotal - item.montoPagado;
       const isDeuda = item.tipo === 'deuda';
       const msg = isDeuda
-        ? `Hola ${item.persona}, te escribo para confirmar el registro de mi pago pendiente por $${pendiente} correspondiente a "${item.concepto}". Fecha límite acordada: ${formatDateOnly(item.fechaLimite)}. Quedo atento/a para coordinar.`
-        : `Hola ${item.persona}, te comparto este recordatorio sobre el saldo pendiente de $${pendiente} correspondiente a "${item.concepto}". La fecha límite registrada es ${formatDateOnly(item.fechaLimite)}. Agradezco confirmarme al realizar el pago.`;
+        ? `Hola ${item.persona}, te escribo para confirmar el registro de mi pago pendiente por ${formatCurrency(pendiente)} correspondiente a "${item.concepto}". Fecha límite acordada: ${formatDateOnly(item.fechaLimite)}. Quedo atento/a para coordinar.`
+        : `Hola ${item.persona}, te comparto este recordatorio sobre el saldo pendiente de ${formatCurrency(pendiente)} correspondiente a "${item.concepto}". La fecha límite registrada es ${formatDateOnly(item.fechaLimite)}. Agradezco confirmarme al realizar el pago.`;
       setCustomMessage(msg);
     }
   }, [item]);

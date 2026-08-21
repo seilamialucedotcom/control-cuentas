@@ -208,7 +208,7 @@ export const RecordModal = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="text-xs font-semibold text-[#6E6A63] block mb-1.5">
-                Monto Total ($) *
+                Monto Total (S/) *
               </label>
               <div className="relative">
                 <DollarSign className="w-4 h-4 absolute left-3.5 top-3.5 text-[#8C8479]" />
