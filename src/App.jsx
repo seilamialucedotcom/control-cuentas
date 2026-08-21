@@ -10,6 +10,8 @@ import { WhatsAppModal } from './components/WhatsAppModal';
 import { PdfDetailModal } from './components/PdfDetailModal';
 import { DeleteConfirmModal } from './components/DeleteConfirmModal';
 import { formatCurrency } from './utils/formatters';
+import { AuthScreen, clearSession, getStoredUser } from './components/AuthScreen';
+import api from './services/api';
 import {
   Search,
   Plus,
@@ -20,29 +22,25 @@ import {
 const STORAGE_KEY = 'control_cuentas_records_v3';
 const LEGACY_DEMO_RECORD_IDS = new Set(['rec-1', 'rec-2', 'rec-3', 'rec-4']);
 
-export function App() {
-  const [records, setRecords] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) {
-          return parsed.filter((record) => !LEGACY_DEMO_RECORD_IDS.has(record.id));
-        }
-      }
-    } catch (e) {
-      console.error('Error loading records from localStorage', e);
-    }
-    return [];
-  });
+function AuthenticatedApp({ user, onLogout }) {
+  const [records, setRecords] = useState([]);
+  const [isLoadingRecords, setIsLoadingRecords] = useState(true);
+  const [recordsError, setRecordsError] = useState('');
 
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
-    } catch (e) {
-      console.error('Error saving records to localStorage', e);
-    }
-  }, [records]);
+    let isMounted = true;
+    api.get('/api/records')
+      .then(({ data }) => {
+        if (isMounted) setRecords(Array.isArray(data) ? data.filter((record) => !LEGACY_DEMO_RECORD_IDS.has(record.id)) : []);
+      })
+      .catch((error) => {
+        if (!isMounted) return;
+        if (error.response?.status === 401) onLogout();
+        else setRecordsError(error.message || 'No se pudieron cargar tus registros.');
+      })
+      .finally(() => { if (isMounted) setIsLoadingRecords(false); });
+    return () => { isMounted = false; };
+  }, []);
 
   const [activeTab, setActiveTab] = useState('deudas');
   const [filterStatus, setFilterStatus] = useState('todos');
@@ -78,78 +76,38 @@ export function App() {
     return Array.from(set).sort();
   }, [records]);
 
-  const handleSaveRecord = (data) => {
-    if (data.id) {
-      setRecords((prev) =>
-        prev.map((r) => {
-          if (r.id === data.id) {
-            const isFullyPaid = r.montoPagado >= data.montoTotal;
-            return {
-              ...r,
-              ...data,
-              estado: isFullyPaid ? 'pagado' : 'pendiente',
-            };
-          }
-          return r;
-        })
-      );
-    } else {
-      const newRecord = {
-        ...data,
-        id: 'rec-' + Date.now(),
-        montoPagado: 0,
-        estado: 'pendiente',
-        abonos: [],
-      };
-      setRecords((prev) => [newRecord, ...prev]);
+  const handleSaveRecord = async (data) => {
+    try {
+      const response = data.id
+        ? await api.put(`/api/records/${data.id}`, data)
+        : await api.post('/api/records', data);
+      setRecords((prev) => data.id ? prev.map((record) => record.id === data.id ? response.data : record) : [response.data, ...prev]);
+    } catch (error) {
+      setRecordsError(error.message || 'No se pudo guardar el registro.');
     }
   };
 
   // Add Partial Payment (Abono)
-  const handleAddAbono = (itemId, monto, nota) => {
-    setRecords((prev) =>
-      prev.map((r) => {
-        if (r.id === itemId) {
-          const newMontoPagado = Math.min(r.montoTotal, r.montoPagado + monto);
-          const isPaidNow = newMontoPagado >= r.montoTotal;
-          const newAbono = {
-            id: 'ab-' + Date.now(),
-            monto,
-            fechaHora: new Date().toLocaleDateString('es-ES', {
-              day: '2-digit',
-              month: '2-digit',
-              year: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit',
-            }),
-            nota: nota || undefined,
-          };
-          return {
-            ...r,
-            montoPagado: newMontoPagado,
-            estado: isPaidNow ? 'pagado' : 'pendiente',
-            abonos: [newAbono, ...r.abonos],
-          };
-        }
-        return r;
-      })
-    );
+  const handleAddAbono = async (itemId, monto, nota) => {
+    try {
+      const { data } = await api.post(`/api/records/${itemId}/abonos`, { monto, nota });
+      setRecords((prev) => prev.map((record) => record.id === itemId ? data : record));
+    } catch (error) {
+      setRecordsError(error.message || 'No se pudo registrar el abono.');
+    }
   };
 
   // Add images (from camera or file upload) to a record
-  const handleAddImages = (itemId, dataUrls) => {
+  const handleAddImages = async (itemId, dataUrls) => {
     if (!Array.isArray(dataUrls) || dataUrls.length === 0) return;
-    setRecords((prev) =>
-      prev.map((r) => {
-        if (r.id === itemId) {
-          return {
-            ...r,
-            imagenes: [...(r.imagenes || []), ...dataUrls],
-          };
-        }
-        return r;
-      })
-    );
+    const item = records.find((record) => record.id === itemId);
+    if (!item) return;
+    try {
+      const { data } = await api.put(`/api/records/${itemId}`, { imagenes: [...(item.imagenes || []), ...dataUrls] });
+      setRecords((prev) => prev.map((record) => record.id === itemId ? data : record));
+    } catch (error) {
+      setRecordsError(error.message || 'No se pudieron guardar las imágenes.');
+    }
   };
 
   // Delete Record
@@ -161,17 +119,14 @@ export function App() {
     }
   };
 
-  const handleConfirmDelete = (id) => {
-    setRecords((prev) => {
-      const updated = prev.filter((r) => r.id !== id);
-      if (selectedPersonName) {
-        const remainingForPerson = updated.filter((r) => r.persona === selectedPersonName);
-        if (remainingForPerson.length === 0) {
-          setSelectedPersonName(null);
-        }
-      }
-      return updated;
-    });
+  const handleConfirmDelete = async (id) => {
+    try {
+      await api.delete(`/api/records/${id}`);
+      setRecords((prev) => prev.filter((record) => record.id !== id));
+      setSelectedPersonName(null);
+    } catch (error) {
+      setRecordsError(error.message || 'No se pudo eliminar el registro.');
+    }
   };
 
   // Grouped by Person
@@ -269,21 +224,35 @@ export function App() {
         }}
         totalPendingDebts={totalDeudasGeneral}
         totalPendingReceivables={totalCobrosGeneral}
+        user={user}
+        onLogout={onLogout}
       />
 
       {/* Main Container */}
       <main className="max-w-6xl mx-auto px-4 sm:px-8 pt-6 space-y-6">
+        {recordsError && (
+          <div role="alert" className="flex items-center justify-between gap-3 rounded-xl border border-[#F5C2B4] bg-[#FDF0EC] px-4 py-3 text-xs font-semibold text-[#A63F29]">
+            <span>{recordsError}</span>
+            <button type="button" onClick={() => setRecordsError('')} className="underline">Cerrar</button>
+          </div>
+        )}
+
+        {isLoadingRecords && (
+          <div className="rounded-2xl border border-[#EFE8DC] bg-[#FFFDF9] px-6 py-10 text-center text-sm text-[#8C8479]">
+            Cargando tus registros...
+          </div>
+        )}
         
         {/* Navigation & Summary Cards */}
-        <SummaryCards
+        {!isLoadingRecords && <SummaryCards
           activeTab={activeTab}
           setActiveTab={handleTabChange}
           records={records}
           peopleCount={existingPeople.length}
-        />
+        />}
 
         {/* VIEW NAVIGATION LOGIC */}
-        {selectedPersonGroup ? (
+        {!isLoadingRecords && selectedPersonGroup ? (
           /* Independent Person Detail Page View */
           <PersonDetailView
             personGroup={selectedPersonGroup}
@@ -312,7 +281,7 @@ export function App() {
             }}
             onAddImages={handleAddImages}
           />
-        ) : activeTab === 'resumen' ? (
+        ) : !isLoadingRecords && activeTab === 'resumen' ? (
           /* Balance General Detailed View */
           <div className="bg-[#FFFDF9] rounded-2xl p-6 border border-[#EFE8DC] shadow-xs space-y-6">
             <h2 className="text-xl font-bold font-display text-[#2D2A26]">
@@ -389,7 +358,7 @@ export function App() {
               </div>
             </div>
           </div>
-        ) : (
+        ) : !isLoadingRecords ? (
           /* Main Views: Person Mini-Summary List */
           <div className="space-y-4">
             
@@ -448,7 +417,7 @@ export function App() {
             </div>
 
           </div>
-        )}
+        ) : null}
 
       </main>
 
@@ -518,6 +487,13 @@ export function App() {
 
     </div>
   );
+}
+
+export function App() {
+  const [user, setUser] = useState(getStoredUser);
+
+  if (!user) return <AuthScreen onAuthenticated={setUser} />;
+  return <AuthenticatedApp user={user} onLogout={() => { clearSession(); setUser(null); }} />;
 }
 
 export default App;
