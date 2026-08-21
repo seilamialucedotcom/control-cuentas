@@ -211,7 +211,7 @@ export const RecordModal = ({
                 Monto Total (S/) *
               </label>
               <div className="relative">
-                <DollarSign className="w-4 h-4 absolute left-3.5 top-3.5 text-[#8C8479]" />
+                
                 <input
                   type="number"
                   required
