@@ -1,3 +1,4 @@
+import imageCompression from 'browser-image-compression';
 import React, { useState } from 'react';
 import {
   formatCurrency,
@@ -53,28 +54,44 @@ export const RecordCard = ({
   };
 
   // Handle file input change: read files as data URLs and forward to parent
-  const handleImageInputChange = (e) => {
+  const handleImageInputChange = async (e) => {
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
 
-    const readers = files.map((file) =>
-      new Promise((resolve, reject) => {
-        const fr = new FileReader();
-        fr.onload = () => resolve(fr.result);
-        fr.onerror = reject;
-        fr.readAsDataURL(file);
-      })
-    );
+    // Configuración de compresión (máximo 1MB por foto)
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+    };
 
-    Promise.all(readers)
-      .then((dataUrls) => {
-        if (onAddImages) onAddImages(item.id, dataUrls);
-        // reset input so same file(s) can be selected again if needed
-        e.target.value = '';
-      })
-      .catch((err) => {
-        console.error('Error reading image files', err);
-      });
+    try {
+      // 1. Comprime todas las imágenes de la tablet/móvil
+      const compressedFiles = await Promise.all(
+        files.map((file) => imageCompression(file, options))
+      );
+
+      // 2. Convierte las imágenes comprimidas a Base64
+      const readers = compressedFiles.map(
+        (file) =>
+          new Promise((resolve, reject) => {
+            const fr = new FileReader();
+            fr.onload = () => resolve(fr.result);
+            fr.onerror = reject;
+            fr.readAsDataURL(file);
+          })
+      );
+
+      const dataUrls = await Promise.all(readers);
+
+      // 3. Envía los datos al padre
+      if (onAddImages) onAddImages(item.id, dataUrls);
+
+      // Reset input para permitir volver a subir el mismo archivo
+      e.target.value = '';
+    } catch (err) {
+      console.error('Error al comprimir o leer las imágenes:', err);
+    }
   };
 
   return (
