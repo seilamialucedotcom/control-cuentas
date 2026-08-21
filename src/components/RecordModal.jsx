@@ -211,7 +211,7 @@ export const RecordModal = ({
                 Monto Total (S/) *
               </label>
               <div className="relative">
-                <span>S/</span>
+                <span className="absolute left-3.5 text-sm font-bold text-[#6E6A63] pointer-events-none select-none">S/</span>
                 <input
                   type="number"
                   required
