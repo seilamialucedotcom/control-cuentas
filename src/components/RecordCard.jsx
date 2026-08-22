@@ -104,7 +104,7 @@ export const RecordCard = ({
           : 'bg-[#FFFDF9] border-[#DBE7DD] shadow-xs hover:border-[#5B8266]/40'
       }`}
     >
-      <div className="flex flex-row flex-wrap sm:items-start justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
         
         {/* Person & Header info */}
         <div className="flex items-start gap-3">
@@ -235,7 +235,7 @@ export const RecordCard = ({
             {item.abonos.map((a, idx) => (
               <div
                 key={a.id || idx}
-                className="flex flex-row flex-wrap sm:items-center justify-between gap-4 text-xs p-2 bg-white rounded-lg border border-[#EAE3D5] text-[#3D3A36]"
+                className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs p-2 bg-white rounded-lg border border-[#EAE3D5] text-[#3D3A36]"
               >
                 <div className="flex items-center gap-4">
                   <span className="w-2 h-2 rounded-full bg-[#5B8266] shrink-0" />

@@ -62,7 +62,7 @@ export const PersonDetailView = ({
 
       {/* Person Summary Header Card */}
       <div className="bg-[#FFFDF9] rounded-2xl p-6 border border-[#EFE8DC] shadow-xs space-y-4">
-        <div className="flex flex-row flex-wrap sm:items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-2xl bg-[#5B8266] text-white flex items-center justify-center font-bold text-xl shrink-0 shadow-xs">
               <User className="w-7 h-7" />

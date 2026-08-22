@@ -41,12 +41,12 @@ export const SummaryCards = ({
   const proximoGeneral = getNextUpcoming(records);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Tab Navigation */}
-      <div className="flex flex-wrap items-center justify-between bg-[#EFE9DF] p-1.5 rounded-2xl border border-[#E2DAD0]">
+      <div className="grid grid-cols-1 sm:grid-cols-3 items-stretch gap-1.5 bg-[#EFE9DF] p-1.5 rounded-2xl border border-[#E2DAD0]">
         <button
           onClick={() => setActiveTab('deudas')}
-          className={`flex-1 min-w-[120px] py-2.5 px-4 rounded-xl font-semibold text-xs sm:text-sm transition-all flex items-center justify-center gap-4 ${
+          className={`w-full min-w-0 py-2.5 px-3 sm:px-4 rounded-xl font-semibold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 sm:gap-4 ${
             activeTab === 'deudas'
               ? 'bg-[#E07A5F] text-white shadow-xs'
               : 'text-[#6E6A63] hover:text-[#2D2A26] hover:bg-[#FAF7F2]'
@@ -58,7 +58,7 @@ export const SummaryCards = ({
 
         <button
           onClick={() => setActiveTab('cobros')}
-          className={`flex-1 min-w-[120px] py-2.5 px-4 rounded-xl font-semibold text-xs sm:text-sm transition-all flex items-center justify-center gap-4 ${
+          className={`w-full min-w-0 py-2.5 px-3 sm:px-4 rounded-xl font-semibold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 sm:gap-4 ${
             activeTab === 'cobros'
               ? 'bg-[#5B8266] text-white shadow-xs'
               : 'text-[#6E6A63] hover:text-[#2D2A26] hover:bg-[#FAF7F2]'
@@ -70,7 +70,7 @@ export const SummaryCards = ({
 
         <button
           onClick={() => setActiveTab('resumen')}
-          className={`flex-1 min-w-[120px] py-2.5 px-4 rounded-xl font-semibold text-xs sm:text-sm transition-all flex items-center justify-center gap-4 ${
+          className={`w-full min-w-0 py-2.5 px-3 sm:px-4 rounded-xl font-semibold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 sm:gap-4 ${
             activeTab === 'resumen'
               ? 'bg-[#3D3A36] text-white shadow-xs'
               : 'text-[#6E6A63] hover:text-[#2D2A26] hover:bg-[#FAF7F2]'
@@ -82,11 +82,11 @@ export const SummaryCards = ({
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
         {/* Card 1: Total Pending */}
-        <div className="bg-[#FFFDF9] rounded-2xl p-5 border border-[#EFE8DC] shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#8C8479]">
+        <div className="min-w-0 bg-[#FFFDF9] rounded-2xl p-3 sm:p-5 border border-[#EFE8DC] shadow-xs flex flex-col justify-between">
+          <div className="flex items-start justify-between gap-3 mb-2">
+            <span className="min-w-0 text-xs font-semibold uppercase tracking-wider text-[#8C8479] break-words">
               {activeTab === 'deudas'
                 ? 'Total por Pagar'
                 : activeTab === 'cobros'
@@ -115,7 +115,7 @@ export const SummaryCards = ({
           </div>
 
           <div>
-            <div className="text-2xl sm:text-3xl font-bold font-display text-[#2D2A26]">
+            <div className="text-xl sm:text-3xl font-bold font-display text-[#2D2A26] break-words">
               {activeTab === 'deudas'
                 ? formatCurrency(totalDeudasPendientes)
                 : activeTab === 'cobros'
@@ -135,9 +135,9 @@ export const SummaryCards = ({
         </div>
 
         {/* Card 2: Upcoming Due Date */}
-        <div className="bg-[#FFFDF9] rounded-2xl p-5 border border-[#EFE8DC] shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#8C8479]">
+        <div className="min-w-0 bg-[#FFFDF9] rounded-2xl p-3 sm:p-5 border border-[#EFE8DC] shadow-xs flex flex-col justify-between">
+          <div className="flex items-start justify-between gap-3 mb-2">
+            <span className="min-w-0 text-xs font-semibold uppercase tracking-wider text-[#8C8479] break-words">
               Próximo Vencimiento
             </span>
             <div className="w-9 h-9 rounded-xl bg-[#FEF3C7] text-[#D97706] flex items-center justify-center">
@@ -158,7 +158,7 @@ export const SummaryCards = ({
                 const pendiente = currentUpcoming.montoTotal - currentUpcoming.montoPagado;
                 return (
                   <>
-                    <div className="text-lg font-bold font-display text-[#2D2A26] truncate">
+                    <div className="text-base sm:text-lg font-bold font-display text-[#2D2A26] break-words">
                       {currentUpcoming.persona}
                     </div>
                     <p className="text-xs font-medium text-[#D97706] mt-0.5">
@@ -179,9 +179,9 @@ export const SummaryCards = ({
         </div>
 
         {/* Card 3: Resolved Total */}
-        <div className="bg-[#FFFDF9] rounded-2xl p-5 border border-[#EFE8DC] shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#8C8479]">
+        <div className="min-w-0 bg-[#FFFDF9] rounded-2xl p-3 sm:p-5 border border-[#EFE8DC] shadow-xs flex flex-col justify-between">
+          <div className="flex items-start justify-between gap-3 mb-2">
+            <span className="min-w-0 text-xs font-semibold uppercase tracking-wider text-[#8C8479] break-words">
               {activeTab === 'deudas'
                 ? 'Total Ya Pagado'
                 : activeTab === 'cobros'
@@ -194,7 +194,7 @@ export const SummaryCards = ({
           </div>
 
           <div>
-            <div className="text-2xl sm:text-3xl font-bold font-display text-[#2D2A26]">
+            <div className="text-xl sm:text-3xl font-bold font-display text-[#2D2A26] break-words">
               {activeTab === 'deudas'
                 ? formatCurrency(totalDeudasSaldadas)
                 : activeTab === 'cobros'

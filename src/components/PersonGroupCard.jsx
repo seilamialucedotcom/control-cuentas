@@ -12,7 +12,7 @@ export const PersonGroupCard = ({
   return (
     <div
       onClick={() => onSelectPerson(personGroup.nombre)}
-      className="bg-[#FFFDF9] hover:bg-[#FAF7F2] rounded-2xl border border-[#EFE8DC] p-5 shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer flex flex-row flex-wrap sm:items-center justify-between gap-4 group"
+      className="bg-[#FFFDF9] hover:bg-[#FAF7F2] rounded-2xl border border-[#EFE8DC] p-3 sm:p-5 shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 group"
     >
       {/* Left: User Avatar & Name */}
       <div className="flex items-center gap-3.5">

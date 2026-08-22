@@ -8,7 +8,7 @@ export const Header = ({
 }) => {
   return (
     <header className="bg-[#FFFDF9] border-b border-[#EFE8DC] pt-5 pb-5 px-4 sm:px-8 shadow-xs">
-      <div className="max-w-6xl mx-auto flex flex-row flex-wrap sm:items-center sm:justify-between gap-4">
+      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         
         {/* Title & Badge */}
         <div className="flex items-center space-x-3">

@@ -284,7 +284,7 @@ function AuthenticatedApp({ user, onLogout }) {
               Resumen General de Cuentas
             </h2>
 
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               {/* Box Deudas */}
               <div className="p-5 bg-[#FAF7F2] rounded-2xl border border-[#F3E2DB]">
                 <div className="flex justify-between items-center mb-3">
