@@ -7,11 +7,11 @@ import { PersonDetailView } from './components/PersonDetailView';
 import { RecordModal } from './components/RecordModal';
 import { AbonoModal } from './components/AbonoModal';
 import { WhatsAppModal } from './components/WhatsAppModal';
-import { PdfDetailModal } from './components/PdfDetailModal';
 import { DeleteConfirmModal } from './components/DeleteConfirmModal';
 import { formatCurrency } from './utils/formatters';
 import { AuthScreen, clearSession, getStoredUser } from './components/AuthScreen';
 import api from './services/api';
+import { downloadRecordPdf } from './utils/printHelper';
 import {
   Search,
   Plus,
@@ -61,9 +61,6 @@ function AuthenticatedApp({ user, onLogout }) {
 
   const [isWhatsAppModalOpen, setIsWhatsAppModalOpen] = useState(false);
   const [whatsAppTargetItem, setWhatsAppTargetItem] = useState(null);
-
-  const [isPdfModalOpen, setIsPdfModalOpen] = useState(false);
-  const [pdfTargetItem, setPdfTargetItem] = useState(null);
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteTargetItem, setDeleteTargetItem] = useState(null);
@@ -266,8 +263,7 @@ function AuthenticatedApp({ user, onLogout }) {
               setIsWhatsAppModalOpen(true);
             }}
             onOpenPdfModal={(item) => {
-              setPdfTargetItem(item);
-              setIsPdfModalOpen(true);
+              downloadRecordPdf(item);
             }}
             onEdit={(item) => {
               setEditingItem(item);
@@ -464,15 +460,6 @@ function AuthenticatedApp({ user, onLogout }) {
           setWhatsAppTargetItem(null);
         }}
         item={whatsAppTargetItem}
-      />
-
-      <PdfDetailModal
-        isOpen={isPdfModalOpen}
-        onClose={() => {
-          setIsPdfModalOpen(false);
-          setPdfTargetItem(null);
-        }}
-        item={pdfTargetItem}
       />
 
       <DeleteConfirmModal

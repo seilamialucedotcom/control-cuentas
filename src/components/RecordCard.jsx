@@ -96,7 +96,7 @@ export const RecordCard = ({
 
   return (
     <div
-      className={`rounded-2xl p-5 transition-all duration-200 border ${
+      className={`rounded-2xl p-3 sm:p-5 transition-all duration-200 border ${
         isPagado
           ? 'bg-[#FFFDF9]/70 border-[#E5DDD0] opacity-85'
           : isDeuda
@@ -104,7 +104,7 @@ export const RecordCard = ({
           : 'bg-[#FFFDF9] border-[#DBE7DD] shadow-xs hover:border-[#5B8266]/40'
       }`}
     >
-      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-4">
         
         {/* Person & Header info */}
         <div className="flex items-start gap-3">
@@ -114,13 +114,13 @@ export const RecordCard = ({
 
           <div className="space-y-1">
             <div className="flex flex-wrap items-center gap-2">
-              <h3 className="font-bold text-lg text-[#2D2A26] font-display">
+              <h3 className="font-bold text-base sm:text-lg text-[#2D2A26] font-display">
                 {item.persona}
               </h3>
 
               {/* Type Badge */}
               <span
-                className={`inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-md border ${
+                className={`inline-flex items-center gap-1 text-[11px] font-bold px-2 py-1 rounded-md border ${
                   isDeuda
                     ? 'bg-[#FDF0EC] text-[#C24E31] border-[#F5C2B4]'
                     : 'bg-[#EAF2EB] text-[#3B6645] border-[#C1DEC7]'
@@ -138,7 +138,7 @@ export const RecordCard = ({
               </span>
             </div>
 
-            <p className="text-sm text-[#5C5750] font-normal leading-relaxed">
+            <p className="text-xs text-[#5C5750] font-normal leading-relaxed">
               {item.concepto}
             </p>
 
@@ -187,7 +187,7 @@ export const RecordCard = ({
           {/* Due date badge */}
           <div className="mt-2 text-right">
             <span
-              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold border ${statusInfo.badgeClass}`}
+              className={`inline-flex items-center gap-1.5 px-2 py-1 text-[11px] rounded-md font-semibold border ${statusInfo.badgeClass}`}
             >
               <Calendar className="w-3.5 h-3.5" />
               <span>{statusInfo.label}</span>
@@ -220,7 +220,7 @@ export const RecordCard = ({
 
       {/* Mini Historial de Abonos / Acciones Parciales (Non-editable) */}
       {item.abonos.length > 0 && (
-        <div className="mt-3 p-3 bg-[#FAF7F2] rounded-xl border border-[#E8E0D2] space-y-1.5">
+        <div className="mt-3 p-2 sm:p-3 bg-[#FAF7F2] rounded-xl border border-[#E8E0D2] space-y-1.5">
           <div className="flex items-center justify-between text-xs font-bold text-[#6E6A63]">
             <span className="flex items-center gap-1.5">
               <History className="w-3.5 h-3.5 text-[#8C8479]" />
@@ -373,11 +373,11 @@ export const RecordCard = ({
       )}
 
       {/* Action Toolbar */}
-      <div className="mt-4 pt-3 border-t border-[#F0E8DC] flex flex-wrap items-center justify-between gap-2">
+      <div className="mt-4 pt-3 border-t border-[#F0E8DC] flex flex-wrap items-center justify-between gap-2 sm:gap-4">
         
         {/* Informative Status Badge (Read-only, derived from payments) */}
         <div
-          className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold border ${
+          className={`inline-flex items-center gap-1.5 px-2 py-1 text-[11px] rounded-xl font-bold border ${
             isPagado
               ? 'bg-[#EAF2EB] text-[#3B6645] border-[#C1DEC7]'
               : item.montoPagado > 0
@@ -403,12 +403,12 @@ export const RecordCard = ({
           )}
         </div>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex flex-wrap items-center gap-1.5">
           {/* Abono Button */}
           {!isPagado && (
             <button
               onClick={() => onOpenAbonoModal(item)}
-              className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#F5EFE6] hover:bg-[#EAE2D5] text-[#5C5750] text-xs font-medium rounded-xl transition border border-[#E2DAD0]"
+              className="inline-flex items-center gap-1 px-2 py-1 text-[11px] bg-[#F5EFE6] hover:bg-[#EAE2D5] text-[#5C5750] font-medium rounded-xl transition border border-[#E2DAD0]"
             >
               <PlusCircle className="w-3.5 h-3.5 text-[#5B8266]" />
               <span>Abonar</span>
@@ -418,7 +418,7 @@ export const RecordCard = ({
           {/* PDF Detail Button for Single User */}
           <button
             onClick={() => onOpenPdfModal(item)}
-            className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#FDF0EC] hover:bg-[#FADBD2] text-[#C24E31] text-xs font-bold rounded-xl transition border border-[#F5C2B4]"
+            className="inline-flex items-center gap-1 px-2 py-1 text-[11px] bg-[#FDF0EC] hover:bg-[#FADBD2] text-[#C24E31] font-bold rounded-xl transition border border-[#F5C2B4]"
             title="Ver detalle y comprobante en PDF de este usuario"
           >
             <FileText className="w-3.5 h-3.5 text-[#C24E31]" />
@@ -429,7 +429,7 @@ export const RecordCard = ({
           {!isPagado && (
             <button
               onClick={() => onOpenWhatsAppModal(item)}
-              className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#F5EFE6] hover:bg-[#EAE2D5] text-[#3D3A36] text-xs font-medium rounded-xl transition border border-[#E2DAD0]"
+              className="inline-flex items-center gap-1 px-2 py-1 text-[11px] bg-[#F5EFE6] hover:bg-[#EAE2D5] text-[#3D3A36] font-medium rounded-xl transition border border-[#E2DAD0]"
               title="Generar mensaje de recordatorio"
             >
               <MessageSquare className="w-3.5 h-3.5" />
@@ -452,7 +452,7 @@ export const RecordCard = ({
               const el = document.getElementById(`img-input-${item.id}`);
               if (el) el.click();
             }}
-            className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#EAF2EB] hover:bg-[#E0F0E6] text-[#3B6645] text-xs font-medium rounded-xl transition border border-[#C1DEC7]"
+            className="inline-flex items-center gap-1 px-2 py-1 text-[11px] bg-[#EAF2EB] hover:bg-[#E0F0E6] text-[#3B6645] font-medium rounded-xl transition border border-[#C1DEC7]"
             title="Agregar imagen(es) (tomar o subir)"
           >
             <Image className="w-3.5 h-3.5" />

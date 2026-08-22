@@ -265,6 +265,92 @@ export function printRecordPdf(item) {
   printWindow.document.close();
 }
 
+export function downloadRecordPdf(item) {
+  const isDeuda = item.tipo === 'deuda';
+  const isPagado = item.estado === 'pagado';
+  const pendiente = item.montoTotal - item.montoPagado;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const emissionDate = formatDateTime(new Date().toISOString());
+
+  doc.setFillColor(91, 130, 102);
+  doc.roundedRect(14, 12, 46, 7, 1.5, 1.5, 'F');
+  doc.setFontSize(8);
+  doc.setTextColor(255, 255, 255);
+  doc.text('CONTROL DE CUENTAS', 17, 16.7);
+  doc.setTextColor(45, 42, 38);
+  doc.setFontSize(19);
+  doc.text(`Detalle de cuenta: ${item.persona}`, 14, 29);
+  doc.setFontSize(9);
+  doc.setTextColor(122, 116, 107);
+  doc.text(`Concepto: ${item.concepto}`, 14, 35);
+  doc.text(`Emisión: ${emissionDate}`, pageWidth - 14, 29, { align: 'right' });
+  doc.text(`ID: #${String(item.id).replace('rec-', '')}`, pageWidth - 14, 35, { align: 'right' });
+
+  const summaryCards = [
+    { label: 'MONTO TOTAL', value: formatCurrency(item.montoTotal), color: [45, 42, 38] },
+    { label: 'TOTAL ABONADO', value: formatCurrency(item.montoPagado), color: [59, 102, 69] },
+    { label: 'SALDO PENDIENTE', value: formatCurrency(pendiente), color: isDeuda ? [194, 78, 49] : [59, 102, 69] },
+  ];
+  const cardWidth = (pageWidth - 36) / 3;
+  summaryCards.forEach((card, index) => {
+    const x = 14 + index * (cardWidth + 4);
+    doc.setFillColor(250, 247, 242);
+    doc.roundedRect(x, 43, cardWidth, 22, 2, 2, 'F');
+    doc.setFontSize(7.5);
+    doc.setTextColor(140, 132, 121);
+    doc.text(card.label, x + 4, 50);
+    doc.setFontSize(13);
+    doc.setTextColor(...card.color);
+    doc.text(card.value, x + 4, 59);
+  });
+
+  doc.setFontSize(10);
+  doc.setTextColor(45, 42, 38);
+  doc.text(isPagado ? 'CUENTA SALDADA' : isDeuda ? 'DEUDA POR PAGAR' : 'COBRO PENDIENTE', 14, 75);
+
+  autoTable(doc, {
+    startY: 79,
+    head: [['Fecha de registro', 'Días máximos', 'Fecha límite', 'Estado']],
+    body: [[
+      formatDateTime(item.fechaCreacion),
+      `${item.diasMaximos} días`,
+      formatDateOnly(item.fechaLimite),
+      isPagado ? 'Saldado' : 'Pendiente',
+    ]],
+    theme: 'grid',
+    styles: { fontSize: 9, cellPadding: 3, textColor: [45, 42, 38], lineColor: [226, 218, 208] },
+    headStyles: { fillColor: [61, 58, 54], textColor: [255, 255, 255], fontStyle: 'bold' },
+  });
+
+  const historyStartY = doc.lastAutoTable.finalY + 14;
+  doc.setFontSize(10);
+  doc.text(`HISTORIAL DE ABONOS (${item.abonos.length})`, 14, historyStartY);
+  autoTable(doc, {
+    startY: historyStartY + 4,
+    head: [['#', 'Fecha y hora', 'Monto', 'Nota / detalle']],
+    body: item.abonos.length > 0
+      ? item.abonos.map((abono, index) => [
+        index + 1,
+        abono.fechaHora,
+        formatCurrency(abono.monto),
+        abono.nota || 'Abono registrado',
+      ])
+      : [['-', '-', '-', 'Aún no se han registrado abonos parciales.']],
+    theme: 'grid',
+    styles: { fontSize: 9, cellPadding: 3, textColor: [45, 42, 38], lineColor: [226, 218, 208] },
+    headStyles: { fillColor: [61, 58, 54], textColor: [255, 255, 255], fontStyle: 'bold' },
+    columnStyles: { 0: { cellWidth: 12 }, 2: { halign: 'right' } },
+  });
+
+  const safePersonName = String(item.persona)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9]+/g, '_')
+    .replace(/^_|_$/g, '');
+  doc.save(`detalle_${safePersonName || 'reporte'}.pdf`);
+}
+
 export function downloadPersonStatementPdf(personName, items) {
   let totalDeuda = 0;
   let totalCobro = 0;

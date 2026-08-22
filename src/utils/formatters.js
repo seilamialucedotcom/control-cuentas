@@ -1,12 +1,9 @@
 export function formatCurrency(amount) {
-  return new Intl.NumberFormat('es-PE', {
-    style: 'currency',
-    currency: 'PEN',
-    // Use no decimal places to match previous behavior; change to 2 if cents are needed
+  const formattedAmount = new Intl.NumberFormat('es-PE', {
     maximumFractionDigits: 0,
-    // ensure symbol (S/) is used
-    currencyDisplay: 'symbol',
   }).format(amount);
+
+  return `S/ ${formattedAmount}`;
 }
 
 // Calculate due date ISO string from creation date + diasMaximos
