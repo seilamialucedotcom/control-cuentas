@@ -79,7 +79,7 @@ export const BackupModal = ({
           
           {statusMessage && (
             <div
-              className={`p-3 rounded-xl text-xs font-medium flex items-center gap-2 border ${
+              className={`p-3 rounded-xl text-xs font-medium flex items-center gap-4 border ${
                 statusMessage.type === 'success'
                   ? 'bg-[#EAF2EB] text-[#3B6645] border-[#C1DEC7]'
                   : 'bg-[#FDF0EC] text-[#C24E31] border-[#F5C2B4]'
@@ -104,7 +104,7 @@ export const BackupModal = ({
             </div>
             <button
               onClick={handleExportJSON}
-              className="px-4 py-2 bg-[#5B8266] hover:bg-[#476C53] text-white text-xs font-semibold rounded-xl transition shrink-0 flex items-center gap-2"
+              className="px-4 py-2 bg-[#5B8266] hover:bg-[#476C53] text-white text-xs font-semibold rounded-xl transition shrink-0 flex items-center gap-4"
             >
               <Download className="w-4 h-4" />
               <span>Exportar</span>
@@ -128,7 +128,7 @@ export const BackupModal = ({
             />
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="px-4 py-2 bg-[#FAF7F2] hover:bg-[#EFE9DF] text-[#3D3A36] text-xs font-semibold rounded-xl border border-[#D8CEBE] transition shrink-0 flex items-center gap-2"
+              className="px-4 py-2 bg-[#FAF7F2] hover:bg-[#EFE9DF] text-[#3D3A36] text-xs font-semibold rounded-xl border border-[#D8CEBE] transition shrink-0 flex items-center gap-4"
             >
               <Upload className="w-4 h-4 text-[#8C8479]" />
               <span>Importar</span>
@@ -145,7 +145,7 @@ export const BackupModal = ({
             </div>
             <button
               onClick={handlePrintReport}
-              className="px-4 py-2 bg-[#FAF7F2] hover:bg-[#EFE9DF] text-[#3D3A36] text-xs font-semibold rounded-xl border border-[#D8CEBE] transition shrink-0 flex items-center gap-2"
+              className="px-4 py-2 bg-[#FAF7F2] hover:bg-[#EFE9DF] text-[#3D3A36] text-xs font-semibold rounded-xl border border-[#D8CEBE] transition shrink-0 flex items-center gap-4"
             >
               <Printer className="w-4 h-4 text-[#8C8479]" />
               <span>Imprimir</span>

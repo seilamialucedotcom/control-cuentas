@@ -44,7 +44,7 @@ export const WhatsAppModal = ({
         
         <div className="px-6 py-4 border-b border-[#F0E8DC] flex items-center justify-between bg-[#FAF7F2]">
           <div>
-            <h2 className="text-lg font-bold text-[#2D2A26] font-display flex items-center gap-2">
+            <h2 className="text-lg font-bold text-[#2D2A26] font-display flex items-center gap-4">
               <MessageSquare className="w-5 h-5 text-[#5B8266]" />
               <span>Recordatorio de WhatsApp</span>
             </h2>
@@ -77,7 +77,7 @@ export const WhatsAppModal = ({
           <div className="flex items-center justify-between pt-2">
             <button
               onClick={handleCopy}
-              className="px-4 py-2.5 bg-[#F2ECE1] hover:bg-[#EAE2D5] text-[#3D3A36] text-xs font-semibold rounded-xl transition flex items-center gap-2 border border-[#E2DAD0]"
+              className="px-4 py-2.5 bg-[#F2ECE1] hover:bg-[#EAE2D5] text-[#3D3A36] text-xs font-semibold rounded-xl transition flex items-center gap-4 border border-[#E2DAD0]"
             >
               {copied ? (
                 <>
@@ -94,7 +94,7 @@ export const WhatsAppModal = ({
 
             <button
               onClick={handleOpenWhatsApp}
-              className="px-5 py-2.5 bg-[#5B8266] hover:bg-[#476C53] text-white text-xs font-bold rounded-xl transition shadow-xs flex items-center gap-2"
+              className="px-5 py-2.5 bg-[#5B8266] hover:bg-[#476C53] text-white text-xs font-bold rounded-xl transition shadow-xs flex items-center gap-4"
             >
               <ExternalLink className="w-4 h-4" />
               <span>Abrir WhatsApp</span>

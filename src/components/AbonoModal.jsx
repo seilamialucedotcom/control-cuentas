@@ -32,7 +32,7 @@ export const AbonoModal = ({
         
         <div className="px-6 py-4 border-b border-[#F0E8DC] flex items-center justify-between bg-[#FAF7F2]">
           <div>
-            <h2 className="text-lg font-bold text-[#2D2A26] font-display flex items-center gap-2">
+            <h2 className="text-lg font-bold text-[#2D2A26] font-display flex items-center gap-4">
               <PlusCircle className="w-5 h-5 text-[#5B8266]" />
               <span>Registrar Abono</span>
             </h2>
@@ -142,7 +142,7 @@ export const AbonoModal = ({
             </button>
             <button
               type="submit"
-              className="px-5 py-2.5 rounded-xl text-xs font-bold bg-[#5B8266] hover:bg-[#476C53] text-white transition-all shadow-xs flex items-center gap-2"
+              className="px-5 py-2.5 rounded-xl text-xs font-bold bg-[#5B8266] hover:bg-[#476C53] text-white transition-all shadow-xs flex items-center gap-4"
             >
               <Check className="w-4 h-4" />
               <span>Registrar Abono</span>

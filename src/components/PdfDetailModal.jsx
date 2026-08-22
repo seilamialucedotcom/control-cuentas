@@ -49,7 +49,7 @@ export const PdfDetailModal = ({
       <div className="bg-[#FFFDF9] rounded-2xl max-w-2xl w-full border border-[#EFE8DC] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] print:max-h-none print:border-none print:shadow-none print:w-full">
 
         <div className="px-6 py-4 border-b border-[#F0E8DC] flex items-center justify-between bg-[#FAF7F2] print:hidden">
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-4">
             <div className="w-8 h-8 rounded-lg bg-[#C24E31]/10 text-[#C24E31] flex items-center justify-center font-bold">
               <FileText className="w-5 h-5" />
             </div>
@@ -73,7 +73,7 @@ export const PdfDetailModal = ({
         <div className="p-6 sm:p-8 overflow-y-auto space-y-6 print:p-0 print:space-y-4 font-sans">
           <div className="flex items-start justify-between border-b border-[#EFE8DC] pb-4">
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-4">
                 <span className="text-xs font-bold uppercase tracking-widest text-[#5B8266] bg-[#EAF2EB] px-2.5 py-0.5 rounded-md border border-[#C1DEC7]">
                   Control de Cuentas
                 </span>
@@ -89,7 +89,7 @@ export const PdfDetailModal = ({
 
             <div className="text-right">
               <span
-                className={`inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full border ${
+                className={`inline-flex items-center gap-1 text-xs font-bold px-4 py-1 rounded-full border ${
                   isPagado
                     ? 'bg-[#EAF2EB] text-[#3B6645] border-[#C1DEC7]'
                     : isDeuda
@@ -160,7 +160,7 @@ export const PdfDetailModal = ({
             </div>
           </div>
 
-          <div className="bg-[#FAF7F2] p-4 rounded-xl border border-[#E8E0D2] text-xs grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="bg-[#FAF7F2] p-4 rounded-xl border border-[#E8E0D2] text-xs grid grid-cols-2 gap-4">
             <div>
               <span className="text-[#8C8479] block font-medium flex items-center gap-1">
                 <Clock className="w-3.5 h-3.5 text-[#A39E93]" /> Fecha y hora de registro:
@@ -256,7 +256,7 @@ export const PdfDetailModal = ({
           </button>
           <button
             onClick={handlePrint}
-            className="px-5 py-2.5 bg-[#C24E31] hover:bg-[#A84228] text-white text-xs font-bold rounded-xl transition shadow-xs flex items-center gap-2"
+            className="px-5 py-2.5 bg-[#C24E31] hover:bg-[#A84228] text-white text-xs font-bold rounded-xl transition shadow-xs flex items-center gap-4"
           >
             <Printer className="w-4 h-4" />
             <span>Imprimir / Exportar a PDF</span>

@@ -104,11 +104,11 @@ export const RecordModal = ({
             <label className="text-xs font-semibold text-[#6E6A63] uppercase tracking-wider block mb-1.5">
               Tipo de Registro
             </label>
-            <div className="grid grid-cols-2 gap-2 p-1 bg-[#EFE9DF] rounded-xl border border-[#E2DAD0]">
+            <div className="grid grid-cols-2 gap-4 p-1 bg-[#EFE9DF] rounded-xl border border-[#E2DAD0]">
               <button
                 type="button"
                 onClick={() => setTipo('deuda')}
-                className={`py-2.5 px-3 rounded-lg font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all ${
+                className={`py-2.5 px-4 rounded-lg font-semibold text-xs sm:text-sm flex items-center justify-center gap-4 transition-all ${
                   tipo === 'deuda'
                     ? 'bg-[#E07A5F] text-white shadow-xs'
                     : 'text-[#6E6A63] hover:text-[#2D2A26]'
@@ -121,7 +121,7 @@ export const RecordModal = ({
               <button
                 type="button"
                 onClick={() => setTipo('cobro')}
-                className={`py-2.5 px-3 rounded-lg font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all ${
+                className={`py-2.5 px-4 rounded-lg font-semibold text-xs sm:text-sm flex items-center justify-center gap-4 transition-all ${
                   tipo === 'cobro'
                     ? 'bg-[#5B8266] text-white shadow-xs'
                     : 'text-[#6E6A63] hover:text-[#2D2A26]'
@@ -140,7 +140,7 @@ export const RecordModal = ({
                 Persona *
               </label>
               {safeExistingPeople.length > 0 && !editingItem && (
-                <div className="flex gap-2 text-[11px]">
+                <div className="flex gap-4 text-[11px]">
                   <button
                     type="button"
                     onClick={() => {
@@ -205,7 +205,7 @@ export const RecordModal = ({
           </div>
 
           {/* Monto Total & Días Máximos */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="text-xs font-semibold text-[#6E6A63] block mb-1.5">
                 Monto Total (S/) *
@@ -307,7 +307,7 @@ export const RecordModal = ({
             </button>
             <button
               type="submit"
-              className={`px-5 py-2.5 rounded-xl text-xs font-bold text-white transition-all shadow-xs flex items-center gap-2 ${
+              className={`px-5 py-2.5 rounded-xl text-xs font-bold text-white transition-all shadow-xs flex items-center gap-4 ${
                 tipo === 'deuda'
                   ? 'bg-[#E07A5F] hover:bg-[#D1684E]'
                   : 'bg-[#5B8266] hover:bg-[#476C53]'

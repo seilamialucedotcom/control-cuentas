@@ -284,11 +284,11 @@ function AuthenticatedApp({ user, onLogout }) {
               Resumen General de Cuentas
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-6">
               {/* Box Deudas */}
               <div className="p-5 bg-[#FAF7F2] rounded-2xl border border-[#F3E2DB]">
                 <div className="flex justify-between items-center mb-3">
-                  <h3 className="font-bold text-[#C24E31] text-base flex items-center gap-2">
+                  <h3 className="font-bold text-[#C24E31] text-base flex items-center gap-4">
                     <ArrowUpRight className="w-5 h-5" /> Deudas por Pagar
                   </h3>
                   <span className="text-xs font-semibold px-2.5 py-1 bg-[#FDF0EC] text-[#C24E31] rounded-lg border border-[#F5C2B4]">
@@ -322,7 +322,7 @@ function AuthenticatedApp({ user, onLogout }) {
               {/* Box Cobros */}
               <div className="p-5 bg-[#FAF7F2] rounded-2xl border border-[#DBE7DD]">
                 <div className="flex justify-between items-center mb-3">
-                  <h3 className="font-bold text-[#3B6645] text-base flex items-center gap-2">
+                  <h3 className="font-bold text-[#3B6645] text-base flex items-center gap-4">
                     <ArrowDownLeft className="w-5 h-5" /> Saldos por Cobrar
                   </h3>
                   <span className="text-xs font-semibold px-2.5 py-1 bg-[#EAF2EB] text-[#3B6645] rounded-lg border border-[#C1DEC7]">
@@ -359,7 +359,7 @@ function AuthenticatedApp({ user, onLogout }) {
           <div className="space-y-4">
             
             {/* Filter & Search Bar */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-[#FFFDF9] p-3 rounded-2xl border border-[#EFE8DC]">
+            <div className="flex flex-row flex-wrap items-center justify-between gap-4 bg-[#FFFDF9] p-4 rounded-2xl border border-[#EFE8DC]">
               
               {/* Search Box */}
               <div className="relative w-full sm:w-80">

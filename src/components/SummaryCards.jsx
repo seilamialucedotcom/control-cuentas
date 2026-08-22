@@ -46,7 +46,7 @@ export const SummaryCards = ({
       <div className="flex flex-wrap items-center justify-between bg-[#EFE9DF] p-1.5 rounded-2xl border border-[#E2DAD0]">
         <button
           onClick={() => setActiveTab('deudas')}
-          className={`flex-1 min-w-[120px] py-2.5 px-3 rounded-xl font-semibold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 ${
+          className={`flex-1 min-w-[120px] py-2.5 px-4 rounded-xl font-semibold text-xs sm:text-sm transition-all flex items-center justify-center gap-4 ${
             activeTab === 'deudas'
               ? 'bg-[#E07A5F] text-white shadow-xs'
               : 'text-[#6E6A63] hover:text-[#2D2A26] hover:bg-[#FAF7F2]'
@@ -58,7 +58,7 @@ export const SummaryCards = ({
 
         <button
           onClick={() => setActiveTab('cobros')}
-          className={`flex-1 min-w-[120px] py-2.5 px-3 rounded-xl font-semibold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 ${
+          className={`flex-1 min-w-[120px] py-2.5 px-4 rounded-xl font-semibold text-xs sm:text-sm transition-all flex items-center justify-center gap-4 ${
             activeTab === 'cobros'
               ? 'bg-[#5B8266] text-white shadow-xs'
               : 'text-[#6E6A63] hover:text-[#2D2A26] hover:bg-[#FAF7F2]'
@@ -70,7 +70,7 @@ export const SummaryCards = ({
 
         <button
           onClick={() => setActiveTab('resumen')}
-          className={`flex-1 min-w-[120px] py-2.5 px-3 rounded-xl font-semibold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 ${
+          className={`flex-1 min-w-[120px] py-2.5 px-4 rounded-xl font-semibold text-xs sm:text-sm transition-all flex items-center justify-center gap-4 ${
             activeTab === 'resumen'
               ? 'bg-[#3D3A36] text-white shadow-xs'
               : 'text-[#6E6A63] hover:text-[#2D2A26] hover:bg-[#FAF7F2]'
@@ -82,7 +82,7 @@ export const SummaryCards = ({
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         {/* Card 1: Total Pending */}
         <div className="bg-[#FFFDF9] rounded-2xl p-5 border border-[#EFE8DC] shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between mb-2">

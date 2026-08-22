@@ -44,7 +44,7 @@ export const PersonDetailView = ({
       <div className="flex items-center justify-between">
         <button
           onClick={onBack}
-          className="inline-flex items-center gap-2 px-3.5 py-2 bg-[#FFFDF9] hover:bg-[#EFE9DF] text-[#3D3A36] text-xs font-bold rounded-xl border border-[#E2DAD0] transition shadow-xs"
+          className="inline-flex items-center gap-4 px-4 py-2 bg-[#FFFDF9] hover:bg-[#EFE9DF] text-[#3D3A36] text-xs font-bold rounded-xl border border-[#E2DAD0] transition shadow-xs"
         >
           <ArrowLeft className="w-4 h-4 text-[#8C8479]" />
           <span>Volver al listado general</span>
@@ -52,7 +52,7 @@ export const PersonDetailView = ({
 
         <button
           onClick={handleDownloadFullStatement}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-[#C24E31] hover:bg-[#A84228] text-white text-xs font-bold rounded-xl transition shadow-xs"
+          className="inline-flex items-center gap-4 px-4 py-2 bg-[#C24E31] hover:bg-[#A84228] text-white text-xs font-bold rounded-xl transition shadow-xs"
           title="Descargar el PDF completo de las cuentas de este usuario"
         >
           <Download className="w-4 h-4" />
@@ -62,13 +62,13 @@ export const PersonDetailView = ({
 
       {/* Person Summary Header Card */}
       <div className="bg-[#FFFDF9] rounded-2xl p-6 border border-[#EFE8DC] shadow-xs space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex flex-row flex-wrap sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-2xl bg-[#5B8266] text-white flex items-center justify-center font-bold text-xl shrink-0 shadow-xs">
               <User className="w-7 h-7" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-4">
                 <h1 className="text-2xl font-black text-[#2D2A26] font-display">
                   {personGroup.nombre}
                 </h1>
@@ -90,7 +90,7 @@ export const PersonDetailView = ({
 
           <button
             onClick={() => onAddNewForPerson(personGroup.nombre)}
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#5B8266] hover:bg-[#476C53] text-white text-xs font-bold rounded-xl transition shadow-xs self-start sm:self-center"
+            className="inline-flex items-center gap-4 px-4 py-2.5 bg-[#5B8266] hover:bg-[#476C53] text-white text-xs font-bold rounded-xl transition shadow-xs self-start sm:self-center"
           >
             <Plus className="w-4 h-4" />
             <span>Agregar Cuenta a este usuario</span>
@@ -98,7 +98,7 @@ export const PersonDetailView = ({
         </div>
 
         {/* Financial Overview Metrics */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-[#F0E8DC]">
+        <div className="grid grid-cols-2 gap-4 pt-3 border-t border-[#F0E8DC]">
           <div className="bg-[#FAF7F2] p-4 rounded-xl border border-[#F3E2DB] flex items-center justify-between">
             <div>
               <span className="text-xs text-[#8C8479] font-medium flex items-center gap-1">
@@ -135,7 +135,7 @@ export const PersonDetailView = ({
         <div className="flex items-center gap-1.5">
           <button
             onClick={() => setFilterType('todos')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition ${
+            className={`px-4 py-1.5 rounded-xl text-xs font-semibold transition ${
               filterType === 'todos'
                 ? 'bg-[#3D3A36] text-white'
                 : 'bg-[#FAF7F2] text-[#6E6A63] hover:bg-[#EFE9DF] border border-[#E2DAD0]'
@@ -145,7 +145,7 @@ export const PersonDetailView = ({
           </button>
           <button
             onClick={() => setFilterType('deuda')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition ${
+            className={`px-4 py-1.5 rounded-xl text-xs font-semibold transition ${
               filterType === 'deuda'
                 ? 'bg-[#C24E31] text-white'
                 : 'bg-[#FAF7F2] text-[#6E6A63] hover:bg-[#EFE9DF] border border-[#E2DAD0]'
@@ -155,7 +155,7 @@ export const PersonDetailView = ({
           </button>
           <button
             onClick={() => setFilterType('cobro')}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition ${
+            className={`px-4 py-1.5 rounded-xl text-xs font-semibold transition ${
               filterType === 'cobro'
                 ? 'bg-[#3B6645] text-white'
                 : 'bg-[#FAF7F2] text-[#6E6A63] hover:bg-[#EFE9DF] border border-[#E2DAD0]'

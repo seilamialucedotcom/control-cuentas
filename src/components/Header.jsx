@@ -8,7 +8,7 @@ export const Header = ({
 }) => {
   return (
     <header className="bg-[#FFFDF9] border-b border-[#EFE8DC] pt-5 pb-5 px-4 sm:px-8 shadow-xs">
-      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="max-w-6xl mx-auto flex flex-row flex-wrap sm:items-center sm:justify-between gap-4">
         
         {/* Title & Badge */}
         <div className="flex items-center space-x-3">
@@ -36,7 +36,7 @@ export const Header = ({
           </button>
           <button
             onClick={onOpenAddModal}
-            className="px-5 py-2.5 bg-[#5B8266] hover:bg-[#476C53] text-white font-semibold text-xs sm:text-sm rounded-2xl transition shadow-sm flex items-center gap-2"
+            className="px-5 py-2.5 bg-[#5B8266] hover:bg-[#476C53] text-white font-semibold text-xs sm:text-sm rounded-2xl transition shadow-sm flex items-center gap-4"
           >
             <Plus className="w-4 h-4" />
             <span>Nuevo Registro</span>
